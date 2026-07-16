@@ -12,7 +12,4 @@ spec:
     key: owner
   ports:
     - port: 80
-      targetPort: 80
-    
-~                                                                                                                                                                       
-~              
+      targetPort: 80                                                                                                                                                         
