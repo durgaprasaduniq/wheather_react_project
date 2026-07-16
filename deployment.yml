@@ -6,7 +6,7 @@ metadata:
     env: app
     key: owner
 spec:
-  replicas: 5
+  replicas: 4
   selector:
     matchLabels:
       env: app
