@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-dep
+  labels:
+    env: app
+    key: owner
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      env: app
+      key: owner
+  template:
+    metadata:
+      labels:
+        env: app
+        key: owner
+    spec:
+      containers:
+        - name: react-dep
+          image: durgaprasaduniq/project-1:v3
+          ports:
+            - containerPort: 80
