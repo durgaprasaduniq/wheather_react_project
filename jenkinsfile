@@ -1,0 +1,61 @@
+pipeline {
+    agent any
+      environment {
+           IMAGE_NAME = 'durgaprasaduniq/project-1'
+           TAG  = 'v3'
+           DOCKER_USER = 'durgaprasaduniq'
+           DOCKER_PASS = ''
+           CLUSTER_NAME = 'my-cluster'
+           AWS_REGION = 'ap-south-1'
+      }
+      stages {
+          stage("git-checkout"){
+              steps{
+                  git 'https://github.com/durgaprasaduniq/wheather_react_project.git'
+              }
+          }
+            stage("docker build"){
+                steps{
+                 sh 'docker build -t $IMAGE_NAME:$TAG .'
+                }
+            }
+              stage("trivyscan"){
+                  steps{
+                      sh 'trivy image --severity HIGH,CRITICAL --exit-code 0 $IMAGE_NAME:$TAG'
+                  }
+              }
+              stage("docker login"){
+                  steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'docker-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                        echo $DOCKER_PASS | docker login \
+                        -u $DOCKER_USER \
+                        --password-stdin
+                    '''
+                }
+            }
+        }
+              stage("docker push"){
+                  steps {
+                      sh 'docker push $IMAGE_NAME:$TAG'
+                  }
+              }
+               stage("eks update"){
+                   steps {
+                       sh 'aws eks update-kubeconfig --name $CLUSTER_NAME --region $AWS_REGION'
+                   }
+               }
+               stage("deploy"){
+                   steps {
+                       sh '''
+                       kubectl apply -f deployment.yml
+                       kubectl apply -f service.yml
+                       '''
+                   }
+               }
+      }
+}
