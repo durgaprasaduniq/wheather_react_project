@@ -19,6 +19,6 @@ spec:
     spec:
       containers:
         - name: react-dep
-          image: durgaprasaduniq/project-1:v3
+          image: durgaprasaduniq/gc:v1
           ports:
             - containerPort: 80
