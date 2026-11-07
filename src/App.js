@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Container, Grid, Link, SvgIcon, Typography } from '@mui/material';
+import { Box, Container, Grid, SvgIcon, Typography } from '@mui/material';
 import Search from './components/Search/Search';
 import WeeklyForecast from './components/WeeklyForecast/WeeklyForecast';
 import TodayWeather from './components/TodayWeather/TodayWeather';
@@ -178,7 +178,6 @@ function App() {
             <Box
               component="img"
               sx={{
-                height: { xs: '20px', sm: '25px', md: '30px' },
                 width: '15%',
                 height:'45px',
               }}
